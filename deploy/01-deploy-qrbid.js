@@ -13,8 +13,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log("Chain ID:", chainId)
     log("Deployer:", deployer)
 
-    // Platform wallet - can be deployer or different address
-    const platformWallet = deployer // Change this if needed
+    // Platform wallet is deployer
+    const platformWallet = deployer 
     
     const args = [platformWallet]
 
@@ -28,7 +28,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log("QRBid deployed to:", qrBid.address)
     log("Platform wallet:", platformWallet)
 
-    // Verify contract on live networks
+    
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         log("Verifying contract...")
         await verify(qrBid.address, args)
