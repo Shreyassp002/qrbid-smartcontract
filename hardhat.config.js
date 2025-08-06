@@ -13,7 +13,7 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 
 module.exports = {
     solidity: {
-        compilers: [{ version: "0.8.19" }, { version: "0.6.6" }, { version: "0.8.24" }],
+        compilers: [{ version: "0.8.20" }],
     },
     defaultNetwork: "hardhat",
     networks: {
@@ -51,10 +51,7 @@ module.exports = {
     namedAccounts: {
         deployer: {
             default: 0,
-        },
-        player: {
-            default: 1,
-        },
+        }
     },
     mocha: {
         timeout: 300000,
