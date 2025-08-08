@@ -4,9 +4,7 @@
 
 # QRBid Smart Contracts
 
-> **QRBid** - A decentralized auction platform where users bid ETH to control a QR code's destination URL for 24 hours.
-
-## 🎯 Project Overview
+## Project Overview
 
 QRBid is a Web3 platform that gamifies QR code control through Ethereum-based auctions. Users compete to determine where a public QR code redirects, creating an engaging blend of blockchain technology and interactive marketing.
 
