@@ -55,10 +55,10 @@ yarn install
 
 ```bash
 # Run all tests
-yarn test
+yarn hardhat test
 
 # Generate coverage report
-yarn coverage
+yarn hardhat coverage
 ```
 
 ### Test Coverage Areas
