@@ -18,20 +18,20 @@ QRBid is a Web3 platform that gamifies QR code control through Ethereum-based au
 4. **Auto-Restart**: New auction begins automatically for the next 24-hour cycle
 5. **Refunds**: All non-winning bids are automatically refunded
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - **Smart Contracts**: Solidity ^0.8.19
 - **Development Framework**: Hardhat
 - **Testing**: Hardhat + Chai + Ethers.js
 - **Network**: Ethereum (Mainnet/Sepolia)
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js >= 16.0.0
 - yarn
 - Basic understanding of Solidity and Ethereum 
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -43,7 +43,6 @@ yarn install
 
 ```
 
-## 🎮 Core Smart Contract Features
 
 ### QRBidAuction.sol
 
@@ -54,7 +53,7 @@ yarn install
 - **Gas Optimization**: Efficient bid processing and refunds
 
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -72,7 +71,7 @@ yarn coverage
 - ✅ Access controls
 - ✅ Edge cases and error handling
 
-## 🚀 Deployment
+## Deployment
 
 ### Local Development
 
