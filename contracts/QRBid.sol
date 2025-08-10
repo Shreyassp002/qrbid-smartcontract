@@ -137,9 +137,9 @@ contract QRBid is ReentrancyGuard, Ownable {
         );
     }
 
-    // FOR QR CODE: Only shows winner URL during 24h display period or empty (for default)
+    // QR CODE
     function getQRUrl() external view returns (string memory) {
-        // Only show winner URL during 24h display period
+        
         if (
             s_lastCompletedAuction.isEnded &&
             block.timestamp < s_lastCompletedAuction.urlExpiryTime &&
@@ -148,11 +148,11 @@ contract QRBid is ReentrancyGuard, Ownable {
             return s_lastCompletedAuction.preferredUrl;
         }
 
-        // Return empty - frontend will show default URL
+    
         return "";
     }
 
-    // FOR AUCTION DISPLAY: Only returns current auction URL
+    // AUCTION DISPLAY
     function getCurrentAuctionUrl() external view returns (string memory) {
         if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
             return s_currentAuction.preferredUrl;
@@ -160,12 +160,12 @@ contract QRBid is ReentrancyGuard, Ownable {
         return "";
     }
 
-    // Check if QR has any URL currently active (auction or winner)
+
     function hasActiveQRUrl() external view returns (bool) {
         return bytes(this.getQRUrl()).length > 0;
     }
 
-    // Get the source of QR URL for display purposes
+    
     function getQRUrlStatus() external view returns (string memory status, string memory source) {
         if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
             return ("auction_active", "Current Auction");
@@ -184,12 +184,12 @@ contract QRBid is ReentrancyGuard, Ownable {
 
     // Get QR URL expiry time
     function getQRUrlExpiryTime() external view returns (uint256) {
-        // If showing auction URL, expiry is auction end + display duration
+
         if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
             return s_currentAuction.endingTime + URL_DISPLAY_DURATION;
         }
 
-        // If showing winner URL, return its expiry time
+        
         if (
             s_lastCompletedAuction.isEnded && block.timestamp < s_lastCompletedAuction.urlExpiryTime
         ) {
@@ -213,12 +213,12 @@ contract QRBid is ReentrancyGuard, Ownable {
             !s_currentAuction.isEnded;
     }
 
-    // Get specific auction details
+    
     function getAuction(uint256 auctionId) external view returns (Auction memory) {
         return auctions[auctionId];
     }
 
-    // Admin functions
+    
     function setMinBidIncrement(uint256 _newIncrement) external onlyOwner {
         minBidIncrement = _newIncrement;
     }
