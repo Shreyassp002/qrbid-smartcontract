@@ -8,7 +8,7 @@ contract QRBid is ReentrancyGuard, Ownable {
     address public immutable i_platformWallet;
     uint256 public s_auctionCounter;
     uint256 public constant AUCTION_DURATION = 24 hours;
-    uint256 public constant URL_DISPLAY_DURATION = 24 hours; 
+    uint256 public constant URL_DISPLAY_DURATION = 24 hours;
     uint256 public minBidIncrement = 0.001 ether;
     uint256 public minStartingBid = 0.01 ether;
 
@@ -25,13 +25,13 @@ contract QRBid is ReentrancyGuard, Ownable {
         address highestBidder;
         string preferredUrl;
         bool isEnded;
-        uint256 urlExpiryTime; 
+        uint256 urlExpiryTime;
     }
 
     // Current auction for bidding
     Auction public s_currentAuction;
 
-    // Last completed auction 
+    // Last completed auction
     Auction public s_lastCompletedAuction;
 
     // Store all auctions
@@ -137,14 +137,9 @@ contract QRBid is ReentrancyGuard, Ownable {
         );
     }
 
-    // Returns the currently live URL (either from active auction or last completed auction within 24h)
-    function getCurrentUrl() external view returns (string memory) {
-        // If there is a active auction with bids, return that URL
-        if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
-            return s_currentAuction.preferredUrl;
-        }
-
-        // If last completed auction URL is still valid, return that
+    // FOR QR CODE: Only shows winner URL during 24h display period or empty (for default)
+    function getQRUrl() external view returns (string memory) {
+        // Only show winner URL during 24h display period
         if (
             s_lastCompletedAuction.isEnded &&
             block.timestamp < s_lastCompletedAuction.urlExpiryTime &&
@@ -153,21 +148,48 @@ contract QRBid is ReentrancyGuard, Ownable {
             return s_lastCompletedAuction.preferredUrl;
         }
 
-        // No valid URL
+        // Return empty - frontend will show default URL
         return "";
     }
 
-    // Check if there's a valid URL currently live
-    function hasActiveUrl() external view returns (bool) {
-        return bytes(this.getCurrentUrl()).length > 0;
+    // FOR AUCTION DISPLAY: Only returns current auction URL
+    function getCurrentAuctionUrl() external view returns (string memory) {
+        if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
+            return s_currentAuction.preferredUrl;
+        }
+        return "";
     }
 
-    // Get URL expiry time
-    function getCurrentUrlExpiryTime() external view returns (uint256) {
+    // Check if QR has any URL currently active (auction or winner)
+    function hasActiveQRUrl() external view returns (bool) {
+        return bytes(this.getQRUrl()).length > 0;
+    }
+
+    // Get the source of QR URL for display purposes
+    function getQRUrlStatus() external view returns (string memory status, string memory source) {
+        if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
+            return ("auction_active", "Current Auction");
+        }
+
+        if (
+            s_lastCompletedAuction.isEnded &&
+            block.timestamp < s_lastCompletedAuction.urlExpiryTime &&
+            bytes(s_lastCompletedAuction.preferredUrl).length > 0
+        ) {
+            return ("winner_display", "Winner Display");
+        }
+
+        return ("default", "Default");
+    }
+
+    // Get QR URL expiry time
+    function getQRUrlExpiryTime() external view returns (uint256) {
+        // If showing auction URL, expiry is auction end + display duration
         if (isAuctionActive() && bytes(s_currentAuction.preferredUrl).length > 0) {
             return s_currentAuction.endingTime + URL_DISPLAY_DURATION;
         }
 
+        // If showing winner URL, return its expiry time
         if (
             s_lastCompletedAuction.isEnded && block.timestamp < s_lastCompletedAuction.urlExpiryTime
         ) {
